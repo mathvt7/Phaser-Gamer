@@ -70,8 +70,6 @@ function preload() {
     });
 
     this.load.image("watermark", "assets/watermark.png");
-    this.load.image("watermark2", "assets/watermark2.png");
-
     this.load.audio("music", "assets/music.mp3");
     this.load.audio("bombSound", "assets/explosion.mp3");
     this.load.audio("gameOverSound", "assets/gameover.mp3");
@@ -84,14 +82,22 @@ function create() {
     this.add.image(config.width/2, config.height/2, "sky")
         .setDisplaySize(config.width, config.height);
 
-    // MÚSICA
+    // ================= MÚSICA =================
     music = this.sound.add("music", { loop: true, volume: 0.4 });
-    music.play();
 
-    bombSound = this.sound.add("bombSound");
-    gameOverSound = this.sound.add("gameOverSound");
-    newScoreSound = this.sound.add("newScoreSound");
+    // Función para reproducir el audio tras la primera interacción del usuario
+    const playMusicOnce = () => {
+        if (!music.isPlaying) {
+            music.play();
+        }
+        // Eliminamos el evento para que no se ejecute múltiples veces
+        this.input.keyboard.off('keydown', playMusicOnce);
+        this.input.off('pointerdown', playMusicOnce);
+    };
 
+    // Escuchamos cualquier tecla o clic para arrancar la música
+    this.input.keyboard.on('keydown', playMusicOnce);
+    this.input.on('pointerdown', playMusicOnce);
     // PLATAFORMAS
     platforms = this.physics.add.staticGroup();
 
@@ -195,27 +201,14 @@ function create() {
 
 let posicionY = this.scale.height - 16; 
 
-// LOGO
-let logoS = this.add.image(
-    this.scale.width - 20,
-    posicionY,
-    "watermark2"
-);
-
-logoS.setOrigin(1, 0.7); //COORDENADAS
-logoS.setAlpha(0.8);
-logoS.setScale(0.5);      
-logoS.setDepth(100);
-logoS.setScrollFactor(0);
-
 // FIRMA 
 let firmaM = this.add.image(
-    this.scale.width / 2,
+    this.scale.width - 20,
     posicionY,
     "watermark"
 );
 
-firmaM.setOrigin(0.5, 0.7); //COORDENADAS
+firmaM.setOrigin(1, 0.7); //COORDENADAS
 firmaM.setAlpha(0.8);
 firmaM.setScale(0.1); 
 firmaM.setDepth(100);
@@ -223,9 +216,6 @@ firmaM.setScrollFactor(0);
 
 this.scale.on('resize', (gameSize) => {
     let nuevaY = gameSize.height - 16;
-
-    logoS.x = gameSize.width - 20;
-    logoS.y = nuevaY;
 
     firmaM.x = gameSize.width / 2;
     firmaM.y = nuevaY;
