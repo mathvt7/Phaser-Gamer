@@ -10,4 +10,4 @@ Juego basado en un tutorial de YouTube.
 Créditos del código base al creador: SINERGIA
 Playlist: https://www.youtube.com/playlist?list=PL7tUbHOY3O6iyIYctCI9wJ4aOnXWcswIo 
 Mejoras agregadas por mi: mathvt7
-    Nota: Se debe abrir en Visual Studio Code usando la extensión Live Server en el archivo HTML 
+    Nota: Se debe abrir en Visual Studio Code usando la extensión Live Server en el archivo HTML.
